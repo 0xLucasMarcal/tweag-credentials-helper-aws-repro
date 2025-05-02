@@ -1,0 +1,24 @@
+bazel_dep(name = "rules_android", version = "0.6.4")
+bazel_dep(name = "rules_kotlin", version = "2.1.3")
+bazel_dep(name = "rules_detekt", version = "0.8.1.2")
+bazel_dep(name = "tweag-credential-helper", version = "0.0.5")
+bazel_dep(name = "rules_jvm_external", version = "6.7")
+
+maven = use_extension("@rules_jvm_external//:extensions.bzl", "maven")
+
+http_archive = use_repo_rule("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+
+http_archive(
+    name = "proto_lib",
+    build_file = "//Protos:BUILD",
+    sha256 = "78924909308532b6df185bce6756e8ad6255e3aa50edce8378a5ae3070c479ea",
+    urls = ["https://REPLACE_WITH_HOST.s3.us-east-1.amazonaws.com/releases/com/path/to/artifact/lib.jar"],
+)
+
+maven.install(
+    artifacts = [
+        "com.squareup.okhttp3:okhttp:4.10.0",
+    ],
+    lock_file = "maven_install.json",
+)
+use_repo(maven, "maven")
